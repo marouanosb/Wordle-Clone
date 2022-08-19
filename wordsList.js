@@ -12972,8 +12972,3 @@ const words = [
 "zymes",
 "zymic"
 ];
-
-
-const n = Math.floor(Math.random() * words.length);
-console.log(words[n]);
-
