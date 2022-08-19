@@ -1,0 +1,50 @@
+body {
+    background-color: #2f4f4f;
+    margin: 0%;
+
+}
+
+.Header {
+    background-color: #5F9EA0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.Title {
+    color: white;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 625px;
+}
+
+.Grid {
+    table-layout: fixed;
+    border-collapse: collapse;
+    
+}
+
+tr, td {
+    background-color: #3a3a3c;
+    color: white;
+    border: 5px solid #2f4f4f;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    font-size: larger;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.Footer {
+    background-color: #182727;
+    position: absolute;
+    bottom: 0;
+    flex-grow: 1;
+    width: 100%;
+}
