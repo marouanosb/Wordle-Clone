@@ -25,6 +25,7 @@ body {
 }
 
 .Grid {
+    position: absolute;
     table-layout: fixed;
     border-collapse: collapse;
     
@@ -44,7 +45,7 @@ tr, td {
 .Footer {
     background-color: #182727;
     position: absolute;
-    bottom: 0;
+    bottom: 2;
     flex-grow: 1;
     width: 100%;
 }

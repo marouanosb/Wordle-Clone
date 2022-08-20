@@ -12975,5 +12975,33 @@ const words = [
 
 
 const n = Math.floor(Math.random() * words.length);
-console.log(words[n]);
+chosenWord = words[n];
+console.log(chosenWord);
 
+function fillRows(row){
+    for(let i=0; i<chosenWord.length; i++){
+        let col = document.createElement('td');
+            col.innerText = chosenWord[i];
+            row.appendChild(col);
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", function(e){
+    let grid = document.getElementById('Grid');
+    let rows = grid.getElementsByTagName('tr');
+    for(let i=0; i<rows.length;i++){
+        for(let j=0; j<chosenWord.length; j++){
+            let col = document.createElement('td');
+            col.innerText = chosenWord[j];
+            rows[i].appendChild(col);
+            
+        }
+        
+    }
+    
+});
+
+
+//let row = document.createElement("tr");
+//x.appendChild(row);
