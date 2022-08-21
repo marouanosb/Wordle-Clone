@@ -12973,35 +12973,59 @@ const words = [
 "zymic"
 ];
 
+//VARIABLES
+let grid;
+let rows;
+let rowsLength;
 
-const n = Math.floor(Math.random() * words.length);
+let currentRow = 0;
+let currentCol = 0;
+let letter;
+
+let chosenWord;
+let wordLength;
+
+const n = Math.floor(Math.random() * words.length); //choose a random number
 chosenWord = words[n];
+wordLength = chosenWord.length;
 console.log(chosenWord);
 
-function fillRows(row){
-    for(let i=0; i<chosenWord.length; i++){
+
+//FUNCTIONS
+function createGrid(){  //create the grid
+    for(let i=0; i<rowsLength;i++){
+         for(let j=0; j<wordLength; j++){
         let col = document.createElement('td');
-            col.innerText = chosenWord[i];
-            row.appendChild(col);
+        rows[i].appendChild(col);
+        }
     }
 }
 
-
-document.addEventListener("DOMContentLoaded", function(e){
-    let grid = document.getElementById('Grid');
-    let rows = grid.getElementsByTagName('tr');
-    for(let i=0; i<rows.length;i++){
-        for(let j=0; j<chosenWord.length; j++){
-            let col = document.createElement('td');
-            col.innerText = chosenWord[j];
-            rows[i].appendChild(col);
-            
-        }
-        
+function handleLetter(){  //handle pressed keys
+    let col = rows[currentRow].getElementsByTagName('td')[currentCol];
+    col.innerText = letter;
+    currentCol = (currentCol +1);
+    if (currentCol === wordLength) {    //switch case isntead
+        currentRow += 1;
+        currentCol = 0;
     }
+
+}
+
+
+//EVENT LISTENERS
+document.addEventListener("DOMContentLoaded", function(e){  //to wait for DOM to load
+    grid = document.getElementById('Grid');
+    rows = grid.getElementsByTagName('tr');
+    rowsLength = rows.length;
+    createGrid();
     
 });
 
 
-//let row = document.createElement("tr");
-//x.appendChild(row);
+document.addEventListener('keypress', (event) => {  //when key is pressed
+    letter = event.key;
+    handleLetter(letter);
+},false);
+
+
