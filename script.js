@@ -12980,36 +12980,101 @@ let rowsLength;
 
 let currentRow = 0;
 let currentCol = 0;
-let letter;
 
 let chosenWord;
 let wordLength;
 
-const n = Math.floor(Math.random() * words.length); //choose a random number
-chosenWord = words[n];
-wordLength = chosenWord.length;
-console.log(chosenWord);
-
 
 //FUNCTIONS
+function chooseWord(){  //choosing a random word from list
+    let n = Math.floor(Math.random() * words.length); //choose a random number
+    chosenWord = words[n];
+    wordLength = chosenWord.length;
+}
+
 function createGrid(){  //create the grid
     for(let i=0; i<rowsLength;i++){
          for(let j=0; j<wordLength; j++){
         let col = document.createElement('td');
+        col.innerText = '';
         rows[i].appendChild(col);
         }
     }
 }
 
-function handleLetter(){  //handle pressed keys
+function winState(state){
+    alert("win = "+ state);
+}
+
+function getWord(){
+    let typedWord = '';
+    for(let i=0; i<wordLength; i++){
+        let col = rows[currentRow].getElementsByTagName('td')[i];
+        typedWord += col.innerText;
+    }
+    return typedWord;
+}
+
+function checkWord(){   //////////handle view change/////////////////////////////////////////////////////
+    isWordCorrect = true;
+    let typedWord = getWord();
+    for(let i=0; i<wordLength; i++){
+        if(typedWord.charAt(i) !== chosenWord.charAt(i)){
+            isWordCorrect = false;
+            break;
+        }
+    }
+    return isWordCorrect;
+}
+
+function jumpRow(){
+    if(currentRow === rowsLength){
+        winState(false);
+        return;
+    }
+    currentRow++; currentCol = 0;
+
+}
+
+function addLetter(letter){
     let col = rows[currentRow].getElementsByTagName('td')[currentCol];
     col.innerText = letter;
-    currentCol = (currentCol +1);
-    if (currentCol === wordLength) {    //switch case isntead
-        currentRow += 1;
-        currentCol = 0;
-    }
+    currentCol++;
+}
 
+function deleteLetter(){
+    if(currentCol === 0){
+        return;
+    }
+    let col = rows[currentRow].getElementsByTagName('td')[currentCol-1];
+    col.innerText = '';
+    currentCol -= 1;
+}
+
+function handleLetter(letter){  //handle pressed keys
+    let col = rows[currentRow].getElementsByTagName('td')[currentCol];
+    //col.innerText = letter;
+    switch(currentCol){
+        case wordLength:
+            switch(letter){
+                case 'Enter':
+                    if(checkWord()){
+                        winState(true);
+                    } else jumpRow();
+                    break;
+                case 'Backspace': deleteLetter(); break;
+                default : break;
+            }
+            break;
+
+        default :
+            switch(letter){
+                case 'Backspace': deleteLetter(); break;
+                case 'Enter' : break;
+                default :  addLetter(letter); break;
+            }
+            break;
+    }
 }
 
 
@@ -13023,9 +13088,16 @@ document.addEventListener("DOMContentLoaded", function(e){  //to wait for DOM to
 });
 
 
-document.addEventListener('keypress', (event) => {  //when key is pressed
-    letter = event.key;
-    handleLetter(letter);
+document.addEventListener('keyup', (event) => {  //when key is pressed
+    let letter = event.key;
+    if((letter.length === 1 & /^[a-zA-Z]+$/.test(letter)) | (letter === 'Enter') | (letter === 'Backspace')){
+        handleLetter(letter);
+    }
+    
 },false);
 
 
+
+//MAIN
+chooseWord();
+console.log(chosenWord);
