@@ -1,4 +1,4 @@
-const words = [
+const wordsList = [
 "aahed",
 "aalii",
 "aargh",
@@ -12987,8 +12987,8 @@ let wordLength;
 
 //FUNCTIONS
 function chooseWord(){  //choosing a random word from list
-    let n = Math.floor(Math.random() * words.length); //choose a random number
-    chosenWord = words[n];
+    let n = Math.floor(Math.random() * wordsList.length); //choose a random number
+    chosenWord = wordsList[n];
     wordLength = chosenWord.length;
 }
 
@@ -13003,7 +13003,10 @@ function createGrid(){  //create the grid
 }
 
 function winState(state){
-    alert("win = "+ state);
+    switch(state){
+        case true : alert("GG! YOU WIN."); break;
+        case false : alert("YOU LOSE! GO BRRRR\nWord was : "+chosenWord); break;
+    }
 }
 
 function getWord(){
@@ -13012,23 +13015,45 @@ function getWord(){
         let col = rows[currentRow].getElementsByTagName('td')[i];
         typedWord += col.innerText;
     }
-    return typedWord;
+    return typedWord.toLowerCase();
 }
 
 function checkWord(){   //////////handle view change/////////////////////////////////////////////////////
     isWordCorrect = true;
     let typedWord = getWord();
+    let col;
     for(let i=0; i<wordLength; i++){
-        if(typedWord.charAt(i) !== chosenWord.charAt(i)){
+        if(typedWord.charAt(i) === chosenWord.charAt(i)){
+            col = rows[currentRow].getElementsByTagName('td')[i];
+            col.style.backgroundColor = "#04aa6d";
+            /*if(currentRow !== rowsLength){
+                col = rows[currentRow+1].getElementsByTagName('td')[i];
+                col.innerText = typedWord.charAt(i);
+                col.style.backgroundColor = "#04aa6d";
+            }*/
+        } else if(chosenWord.includes(typedWord.charAt(i))){
+            let indexes = [];
+            for(let j=0; j<chosenWord.length;j++) {
+                if (chosenWord[j] === typedWord.charAt(i)){
+                    indexes.push(i);
+                }
+            }
+            for(idx of indexes){
+                col = rows[currentRow].getElementsByTagName('td')[idx];
+                col.style.backgroundColor = "hsl(27deg 90% 55%)";
+                
+            }
             isWordCorrect = false;
-            break;
+        }
+            else{
+            isWordCorrect = false;
         }
     }
     return isWordCorrect;
 }
 
 function jumpRow(){
-    if(currentRow === rowsLength){
+    if(currentRow === rowsLength-1){
         winState(false);
         return;
     }
@@ -13038,7 +13063,11 @@ function jumpRow(){
 
 function addLetter(letter){
     let col = rows[currentRow].getElementsByTagName('td')[currentCol];
-    col.innerText = letter;
+    /*if(col.innerText !== ''){
+        currentCol++;
+        addLetter(letter);
+    }*/
+    col.innerText = letter.toUpperCase();
     currentCol++;
 }
 
@@ -13055,7 +13084,7 @@ function handleLetter(letter){  //handle pressed keys
     let col = rows[currentRow].getElementsByTagName('td')[currentCol];
     //col.innerText = letter;
     switch(currentCol){
-        case wordLength:
+        case wordLength :
             switch(letter){
                 case 'Enter':
                     if(checkWord()){
